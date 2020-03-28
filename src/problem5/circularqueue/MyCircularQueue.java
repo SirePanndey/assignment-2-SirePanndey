@@ -6,5 +6,88 @@
  */
 package problem5.circularqueue;
 //to implement circular queue
+
+import problem5.node.Node;
+import problem5.student.Student;
+
+
 public class MyCircularQueue {
+    private static Node rear;
+    private static int size;
+
+    public MyCircularQueue() {
+        rear = null;
+        size = 0;
+    }
+
+    public void enqueue(Student data){
+        Node node = new Node(data);
+        if (isEmpty()){
+            rear = node;
+            size++;
+            node.setNext(node);
+        } else{
+            node.setNext(rear.getNext());
+            rear.setNext(node);
+            rear = node;
+            size++;
+        }
+
+    }
+
+    public  Node getRear() {
+        return rear;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    private static boolean isEmpty() {
+        boolean rs = false;
+        if(rear == null){
+            rs = true;
+        }
+        return rs;
+    }
+
+    public static boolean dequeue(){
+        boolean rs = false;
+        if (!isEmpty()){
+            size--;
+            rs = true;
+            if (rear.getNext() == rear){
+                rear = null;
+            } else{
+                rear.setNext(rear.getNext().getNext());
+            }
+        }
+        return rs;
+    }
+
+    public Node peek(){
+        Node response = null;
+        if (!isEmpty()){
+            response = rear.getNext();
+        }
+        return response;
+    }
+
+    public int remove(){
+        int k = 0;
+        int l = 0;
+        Node head = rear.getNext();
+        while (l<size){
+            if (head.getData().getBackLogCount() == 0){
+                ++k;
+                System.out.println(head.getData().getStudentName());
+                head = head.getNext();
+                ++l;
+            } else{
+                head = head.getNext();
+                ++l;
+            }
+        }
+        return k;
+    }
 }
